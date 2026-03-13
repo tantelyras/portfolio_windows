@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-tantelinirina",
+  "version": "1.0.0",
+  "description": "Portfolio Windows 11 - Tantelinirina Rasoloniaina",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.3.3"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}
