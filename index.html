@@ -727,7 +727,7 @@ function initWallpaper(){
   const canvas=$('wallpaper-canvas')
   canvas.width=window.innerWidth;canvas.height=window.innerHeight
   const ctx=canvas.getContext('2d')
-  const N=80
+  const N=40
   const nodes=Array.from({length:N},()=>({
     x:Math.random()*canvas.width,y:Math.random()*canvas.height,
     vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
@@ -791,7 +791,7 @@ function doShutdown(){
   closePowerMenu();closeStart()
   document.querySelectorAll('.screen').forEach(sc=>sc.classList.remove('active'))
   $('s-shutdown').classList.add('active')
-  setTimeout(()=>{show('s-boot');setTimeout(()=>{$('s-boot').classList.add('fade-out');setTimeout(()=>show('s-lock'),480)},800)},2000)
+  setTimeout(()=>{show('s-boot');setTimeout(()=>{$('s-boot').classList.add('fade-out');setTimeout(()=>{show('s-lock');if(!window._wpInit){window._wpInit=true;initWallpaper()}},480)},800)},2000)
 }
 function doRestart(){doShutdown()}
 function closePowerMenu(){$('power-menu').classList.remove('open')}
@@ -1020,8 +1020,9 @@ function showChromeResults(q){
 }
 
 /* ═══ BOOT SEQUENCE ═══ */
+document.addEventListener('DOMContentLoaded', function() {
 tick();setInterval(tick,15000)
-setTimeout(()=>{$('s-boot').classList.add('fade-out');setTimeout(()=>show('s-lock'),480)},800)
+setTimeout(()=>{$('s-boot').classList.add('fade-out');setTimeout(()=>{show('s-lock');if(!window._wpInit){window._wpInit=true;initWallpaper()}},480)},800)
 
 /* ═══ LOCK ═══ */
 $('s-lock').addEventListener('click',()=>{show('s-login');setTimeout(()=>{const p=$('pin');if(p)p.focus()},80)})
@@ -1030,6 +1031,7 @@ $('s-sleep').addEventListener('click',()=>show('s-lock'))
 /* ═══ LOGIN ═══ */
 function goDesk(){
   show('s-desk');refreshTaskbar();initPaint();showVsFile('html');buildCal()
+  if(!window._wpInit){window._wpInit=true;setTimeout(initWallpaper,50)}
 }
 $('login-btn').addEventListener('click',goDesk)
 $('pin').addEventListener('keydown',e=>{if(e.key==='Enter')goDesk()})
@@ -1060,7 +1062,6 @@ document.addEventListener('click',e=>{
 })
 
 /* ═══ INIT ═══ */
-initWallpaper()
 document.querySelectorAll('.win').forEach(w=>{makeDraggable(w);addResizeHandles(w)})
 document.querySelectorAll('.dico').forEach(makeDraggableIcon)
 
@@ -1288,6 +1289,7 @@ document.querySelectorAll('.dico').forEach(makeDraggableIcon)
   // Init with EN
   window.addEventListener('load', () => { setTimeout(() => applyLang(), 100) })
 
-</script>
+
+});</script>
 </body>
 </html>
