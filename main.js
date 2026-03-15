@@ -104,54 +104,73 @@ function maximizeWin(id){
   bringFront(id)
 }
 function refreshTaskbar(){
-  // Pinned apps that are in the taskbar
+  // Pinned apps in taskbar
   const PINNED = ['w-chrome','w-vscode','w-calc','w-paint','w-settings']
   
-  // Update dot indicators on pinned taskbar icons
+  // Portfolio/shortcut windows (shown as icons right of start when open)
+  const SHORTCUTS = [
+    {id:'w-about', color:'#60cdff', label:'Profile',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="white"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="white" stroke-width="2" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#0078d4,#6b47ed)'},
+    {id:'w-skills', color:'#b39dff', label:'Skills',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="white" stroke-width="2" fill="none"/><line x1="7" y1="11" x2="17" y2="11" stroke="white" stroke-width="1.6"/></svg>',
+     bg:'linear-gradient(135deg,#6b47ed,#9b6bff)'},
+    {id:'w-projects', color:'#EF9F27', label:'Projects',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M3 7h7l2 3h9v11H3z" stroke="white" stroke-width="2" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#854F0B,#EF9F27)'},
+    {id:'w-contact', color:'#5DCAA5', label:'Contact',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2" stroke="white" stroke-width="2" fill="none"/><polyline points="2,7 12,14 22,7" stroke="white" stroke-width="1.6" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#0f6e56,#5DCAA5)'},
+    {id:'w-experience', color:'#e05a4d', label:'Experience',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="15" rx="2" stroke="white" stroke-width="2" fill="none"/><path d="M8 7V5a4 4 0 0 1 8 0v2" stroke="white" stroke-width="2" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#c42b1c,#e05a4d)'},
+    {id:'w-formation', color:'#5DCAA5', label:'Education',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3L2 9l10 6 10-6-10-6z" stroke="white" stroke-width="2" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#0f6e56,#1D9E75)'},
+    {id:'w-certif', color:'#60cdff', label:'Certifications',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="10" r="6" stroke="white" stroke-width="2" fill="none"/><polyline points="9,10 11.5,12.5 16,8" stroke="white" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>',
+     bg:'linear-gradient(135deg,#185FA5,#60cdff)'},
+    {id:'w-volontariat', color:'#378ADD', label:'Volunteering',
+     svg:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 21s-9-6-9-13a9 9 0 0 1 18 0c0 7-9 13-9 13z" stroke="white" stroke-width="2" fill="none"/></svg>',
+     bg:'linear-gradient(135deg,#185FA5,#378ADD)'},
+  ]
+
+  // 1. Update dot indicators on pinned taskbar icons
   PINNED.forEach(id => {
-    const el = $(id)
     const tbiEl = document.querySelector('.tbi[data-open="'+id+'"]')
     if (!tbiEl) return
-    // Add/remove 'lit' class (shows dot below)
-    if (el && el.classList.contains('open')) {
-      tbiEl.classList.add('lit')
-    } else {
-      tbiEl.classList.remove('lit')
-    }
+    const el = document.getElementById(id)
+    el && el.classList.contains('open') ? tbiEl.classList.add('lit') : tbiEl.classList.remove('lit')
   })
 
-  // tb-wins: only show NON-pinned open windows
-  const c = $('tb-wins')
-  if (!c) return
-  c.innerHTML = ''
-  const lbls = {
-    'w-about': currentLang==='fr'?'Profil':'Profile',
-    'w-skills': currentLang==='fr'?'Compétences':'Skills',
-    'w-projects': currentLang==='fr'?'Projets':'Projects',
-    'w-contact': 'Contact',
-    'w-experience': currentLang==='fr'?'Expérience':'Experience',
-    'w-formation': 'Education',
-    'w-certif': 'Certifications',
-    'w-volontariat': currentLang==='fr'?'Volontariat':'Volunteering',
-    'w-calc': currentLang==='fr'?'Calculatrice':'Calculator',
-    'w-paint': 'Paint',
-    'w-vscode': 'VS Code',
-    'w-chrome': 'Chrome',
-    'w-settings': currentLang==='fr'?'Paramètres':'Settings'
-  }
-  Object.entries(WIN_META).forEach(([id, meta]) => {
-    const el = $(id)
-    if (!el || !el.classList.contains('open')) return
-    if (PINNED.includes(id)) return // skip pinned - they show dot instead
-    const vis = !el.classList.contains('minimized')
-    const btn = document.createElement('button')
-    btn.className = 'tb-win-btn' + (vis ? ' is-open' : '')
-    btn.innerHTML = '<span class="tb-dot" style="background:'+meta.color+'"></span><span>'+(lbls[id]||meta.label)+'</span>'
-    btn.addEventListener('click', () => {
-      el.classList.contains('minimized') ? openWin(id) : minimizeWin(id)
+  // 2. Update shortcut icons (right of start menu center)
+  const sc = document.getElementById('tb-shortcuts')
+  if (sc) {
+    sc.innerHTML = ''
+    SHORTCUTS.forEach(s => {
+      const el = document.getElementById(s.id)
+      if (!el || !el.classList.contains('open')) return
+      const isMin = el.classList.contains('minimized')
+      const btn = document.createElement('div')
+      btn.className = 'tbi' + (isMin ? '' : ' lit')
+      btn.title = s.label
+      btn.style.cssText = 'width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;flex-shrink:0'
+      btn.innerHTML = '<div style="width:26px;height:26px;border-radius:7px;background:'+s.bg+';display:flex;align-items:center;justify-content:center">'+s.svg+'</div>'
+      if (!isMin) {
+        const dot = document.createElement('span')
+        dot.style.cssText = 'position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:4px;height:4px;border-radius:50%;background:'+s.color
+        btn.appendChild(dot)
+      }
+      btn.addEventListener('click', () => {
+        el.classList.contains('minimized') ? openWin(s.id) : minimizeWin(s.id)
+      })
+      sc.appendChild(btn)
     })
-    c.appendChild(btn)
-  })
+  }
+
+  // 3. tb-wins: only for truly extra windows (none by default)
+  const c = document.getElementById('tb-wins')
+  if (c) c.innerHTML = ''
 }
 /* ═══ DRAG ═══ */
 function makeDraggable(el){
@@ -451,6 +470,38 @@ const EJS_SERVICE='YOUR_SERVICE_ID',EJS_TEMPLATE='YOUR_TEMPLATE_ID',EJS_KEY='YOU
 window.addEventListener('load',()=>{if(typeof emailjs!=='undefined')emailjs.init(EJS_KEY)})
 
 /* ═══ BOOT + INIT ═══ */
+
+// Expose functions to global scope (required for HTML onclick with type=module)
+window.calMove = calMove
+window.calcAC = calcAC
+window.calcDot = calcDot
+window.calcEq = calcEq
+window.calcNum = calcNum
+window.calcOp = calcOp
+window.calcPct = calcPct
+window.calcSign = calcSign
+window.chromeGoogleSearch = chromeGoogleSearch
+window.chromeSearch = chromeSearch
+window.clearCanvas = clearCanvas
+window.closeStart = closeStart
+window.doLock = doLock
+window.doLogout = doLogout
+window.doRestart = doRestart
+window.doShutdown = doShutdown
+window.doSleep = doSleep
+window.focusChromeSearch = focusChromeSearch
+window.setBrightness = setBrightness
+window.setPaintColor = setPaintColor
+window.setPaintTool = setPaintTool
+window.show = show
+window.showVsFile = showVsFile
+window.smSearch = smSearch
+window.setLang = setLang
+window.openWin = openWin
+window.closeWin = closeWin
+window.toggleStart = toggleStart
+window.openStart = openStart
+
 document.addEventListener('DOMContentLoaded', function() {
 
 
