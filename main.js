@@ -483,3 +483,31 @@ window.addEventListener('load',()=>{if(typeof emailjs!=='undefined')emailjs.init
   // Brightness sliders
   const abEl=$('ac-brightness');if(abEl)abEl.addEventListener('input',function(){setBrightness(this.value)})
   const brEl=$('brightness-range');if(brEl)brEl.addEventListener('input',function(){setBrightness(this.value)})
+
+// Lang menu - use event delegation (no inline onclick needed)
+document.addEventListener('click', function(e) {
+  const item = e.target.closest('[data-lang]')
+  if (item) {
+    const lang = item.dataset.lang
+    setLang(lang)
+    const m = document.getElementById('lang-menu')
+    if (m) m.classList.remove('open')
+    return
+  }
+  // Toggle lang menu
+  const trayLang = e.target.closest('#tray-lang-btn') || e.target.closest('#tray-lang')
+  if (trayLang) {
+    e.stopPropagation()
+    const m = document.getElementById('lang-menu')
+    if (m) m.classList.toggle('open')
+    return
+  }
+  // Toggle battery popup
+  const trayBatt = e.target.closest('#tray-batt-btn') || e.target.closest('#tray-batt')
+  if (trayBatt) {
+    e.stopPropagation()
+    const bp = document.getElementById('batt-popup')
+    if (bp) bp.style.display = bp.style.display === 'block' ? 'none' : 'block'
+    return
+  }
+})
