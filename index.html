@@ -170,6 +170,14 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 .tc-time{font-size:12px;color:rgba(255,255,255,.9);line-height:1.2}
 .tc-date{font-size:10px;color:rgba(255,255,255,.55);line-height:1.2}
 
+
+/* LANG MENU */
+.lang-menu{position:absolute;bottom:56px;right:80px;background:rgba(28,28,36,.98);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;z-index:600;display:none;box-shadow:0 16px 40px rgba(0,0,0,.7);min-width:110px}
+.lang-menu.open{display:block;animation:pmopen .15s ease}
+.lang-menu-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.82);font-size:13px;transition:background .12s}
+.lang-menu-item:hover{background:rgba(255,255,255,.1)}
+.lang-menu-item.active{background:rgba(0,120,212,.25);color:#60cdff}
+
 /* POWER MENU */
 .power-menu{position:absolute;bottom:56px;right:8px;background:rgba(28,28,36,.98);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;z-index:600;display:none;box-shadow:0 16px 40px rgba(0,0,0,.7);min-width:160px}
 .power-menu.open{display:block;animation:pmopen .15s ease}
@@ -324,10 +332,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 
 <!-- LOGIN -->
 <div class="screen" id="s-login" style="z-index:5">
-  <div class="login-bg-overlay"></div>    <div style="position:absolute;top:16px;right:16px;z-index:10;display:flex;gap:6px;align-items:center">
-      <button id="lang-en" onclick="setLang('en')" style="background:rgba(0,120,212,.7);color:white;border:1px solid rgba(0,120,212,.9);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600">EN</button>
-      <button id="lang-fr" onclick="setLang('fr')" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer">FR</button>
-    </div>
+  <div class="login-bg-overlay"></div>
   <div class="login-card">
     <div class="login-avatar"><img src="./photo.jpg" alt="TR"/></div>
     <div class="login-name">Tantelinirina Rasoloniaina</div>
@@ -343,12 +348,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 
 <!-- DESKTOP -->
 <div class="screen" id="s-desk" style="z-index:2">
-  <div class="desk-area" id="desk-area">  <!-- LANGUAGE SELECTOR -->
-  <div style="position:absolute;top:14px;left:14px;z-index:160;display:flex;gap:6px;align-items:center">
-    <button id="desk-lang-en" onclick="setLang('en')" style="background:rgba(0,120,212,.6);color:white;border:1px solid rgba(0,120,212,.8);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600">EN</button>
-    <button id="desk-lang-fr" onclick="setLang('fr')" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer">FR</button>
-  </div>
-
+  <div class="desk-area" id="desk-area">
   <!-- ═══ DESKTOP ICONS (Portfolio sections only) ═══ -->
   <div class="dico" id="di-about" style="top:20px;left:16px" data-open="w-about">
     <div class="dico-img" style="background:linear-gradient(135deg,#0078d4,#6b47ed)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="white" opacity=".9"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="white" stroke-width="2" fill="none" opacity=".9"/></svg></div>
@@ -588,10 +588,36 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
     <div class="tb-wins" id="tb-wins"></div>
     <!-- SYSTEM TRAY -->
     <div class="sys-tray">
-      <div class="tray-icon" id="tray-notif" title="Notifications"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a5 5 0 0 0-5 5v3l-1 2h12l-1-2V7a5 5 0 0 0-5-5z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M6.5 13a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.3"/></svg></div>
-      <div class="tray-icon" id="tray-ac" title="Wi-Fi · Volume · Batterie"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12.5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5z" fill="currentColor"/><path d="M4.5 9.5A5 5 0 0 1 8 8a5 5 0 0 1 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2 7A8 8 0 0 1 8 4.5 8 8 0 0 1 14 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".5"/></svg></div>
-      <!-- POWER BUTTON -->
-      <div class="tray-icon" id="tray-power" title="Options d'alimentation"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 3v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5 5a5 5 0 1 0 6 0" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></div>
+      <!-- hidden icons reveal -->
+      <div class="tray-icon" id="tray-notif" title="Notifications" style="font-size:10px;color:rgba(255,255,255,.55)">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </div>
+      <!-- mic off -->
+      <div class="tray-icon" title="Microphone" style="color:rgba(255,255,255,.55)">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1a2.5 2.5 0 0 1 2.5 2.5v4a2.5 2.5 0 0 1-5 0V3.5A2.5 2.5 0 0 1 8 1z" stroke="currentColor" stroke-width="1.3"/><path d="M4 7.5a4 4 0 0 0 8 0M8 11.5v3M6 14.5h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><line x1="3" y1="13" x2="13" y2="3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <!-- wifi -->
+      <div class="tray-icon" id="tray-ac" title="Wi-Fi · Volume · Batterie">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 12.5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5z" fill="currentColor"/><path d="M4.5 9.5A5 5 0 0 1 8 8a5 5 0 0 1 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2 7A8 8 0 0 1 8 4.5 8 8 0 0 1 14 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <!-- volume -->
+      <div class="tray-icon" title="Volume">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 6H6l4-3v10L6 10H3V6z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M10.5 5.5a3 3 0 0 1 0 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+      <!-- battery -->
+      <div class="tray-icon" title="Battery 71%">
+        <svg width="20" height="11" viewBox="0 0 22 12" fill="none"><rect x=".5" y=".5" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1"/><rect x="1.5" y="1.5" width="12.6" height="9" rx="1.5" fill="currentColor" opacity=".7"/><path d="M19 4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <!-- LANGUAGE icon (EN/FR toggle) -->
+      <div class="tray-icon" id="tray-lang" title="Language / Langue" style="font-size:11px;font-weight:700;letter-spacing:-.5px;color:rgba(255,255,255,.85);min-width:28px;justify-content:center" id="tray-lang">
+        <span id="tray-lang-label">ENG</span>
+      </div>
+      <!-- lang dropdown -->
+      <div class="lang-menu" id="lang-menu">
+        <div class="lang-menu-item active" id="lm-en" onclick="setLang('en');closeLangMenu()">🇬🇧 English</div>
+        <div class="lang-menu-item" id="lm-fr" onclick="setLang('fr');closeLangMenu()">🇫🇷 Français</div>
+      </div>
+      <!-- clock -->
       <div class="tray-clock" id="tray-clock-btn"><span class="tc-time" id="tray-time">--:--</span><span class="tc-date" id="tray-date">--/--/----</span></div>
     </div>
   </div>
@@ -1006,6 +1032,7 @@ function showChromeResults(q){
 }
 
 /* ═══ LANGUAGE ═══ */
+function closeLangMenu(){const m=document.getElementById('lang-menu');if(m)m.classList.remove('open')}
 function setLang(lang){
   currentLang=lang
   document.querySelectorAll('#lang-en,#desk-lang-en').forEach(b=>{
@@ -1027,6 +1054,10 @@ function setLang(lang){
   const lh2=document.querySelector('.login-hint-txt');if(lh2)lh2.textContent=lang==='fr'?'Laissez vide et cliquez sur la flèche':'Leave empty and click the arrow'
   const lt=document.querySelector('.login-tip');if(lt)lt.textContent=lang==='fr'?'Pas besoin de mot de passe — cliquez directement.':'No password needed — click directly.'
   const bl=document.querySelector('.boot-label');if(bl)bl.textContent=lang==='fr'?'Chargement du portfolio...':'Loading portfolio...'
+  // update tray label
+  const tll=document.getElementById('tray-lang-label');if(tll)tll.textContent=lang==='en'?'ENG':'FRA'
+  const lmen=document.getElementById('lm-en');if(lmen)lmen.className='lang-menu-item'+(lang==='en'?' active':'')
+  const lmfr=document.getElementById('lm-fr');if(lmfr)lmfr.className='lang-menu-item'+(lang==='fr'?' active':'')
   refreshTaskbar()
 }
 
@@ -1076,7 +1107,8 @@ document.addEventListener('DOMContentLoaded',function(){
   $('tb-start').addEventListener('click',e=>{e.stopPropagation();toggleStart()})
   $('tray-notif').addEventListener('click',e=>{e.stopPropagation();$('notif-center').classList.contains('open')?closeNotif():openNotif()})
   $('tray-ac').addEventListener('click',e=>{e.stopPropagation();$('action-center').classList.contains('open')?closeAC():openAC()})
-  $('tray-power').addEventListener('click',e=>{e.stopPropagation();closeStart();closeAC();closeNotif();$('power-menu').classList.toggle('open')})
+  // tray-power removed - power is in start menu footer only
+  const trayLang=document.getElementById('tray-lang');if(trayLang)trayLang.addEventListener('click',e=>{e.stopPropagation();const m=document.getElementById('lang-menu');if(m)m.classList.toggle('open')})
   $('tray-clock-btn').addEventListener('click',e=>{e.stopPropagation();$('notif-center').classList.contains('open')?closeNotif():openNotif()})
   $('btn-cancel').addEventListener('click',()=>$('lout').classList.remove('show'))
   $('btn-logout').addEventListener('click',()=>{$('lout').classList.remove('show');show('s-login')})
@@ -1086,7 +1118,8 @@ document.addEventListener('DOMContentLoaded',function(){
     if(!e.target.closest('#smenu')&&!e.target.closest('#tb-start'))closeStart()
     if(!e.target.closest('#action-center')&&!e.target.closest('#tray-ac'))closeAC()
     if(!e.target.closest('#notif-center')&&!e.target.closest('#tray-notif')&&!e.target.closest('#tray-clock-btn'))closeNotif()
-    if(!e.target.closest('#power-menu')&&!e.target.closest('#tray-power')&&!e.target.closest('.sm-power-btn'))closePowerMenu()
+    if(!e.target.closest('#power-menu')&&!e.target.closest('.sm-power-btn'))closePowerMenu()
+    if(!e.target.closest('#lang-menu')&&!e.target.closest('#tray-lang'))closeLangMenu()
   })
 
   // Init draggable windows + icons
@@ -1263,6 +1296,14 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 .tc-time{font-size:12px;color:rgba(255,255,255,.9);line-height:1.2}
 .tc-date{font-size:10px;color:rgba(255,255,255,.55);line-height:1.2}
 
+
+/* LANG MENU */
+.lang-menu{position:absolute;bottom:56px;right:80px;background:rgba(28,28,36,.98);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;z-index:600;display:none;box-shadow:0 16px 40px rgba(0,0,0,.7);min-width:110px}
+.lang-menu.open{display:block;animation:pmopen .15s ease}
+.lang-menu-item{display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.82);font-size:13px;transition:background .12s}
+.lang-menu-item:hover{background:rgba(255,255,255,.1)}
+.lang-menu-item.active{background:rgba(0,120,212,.25);color:#60cdff}
+
 /* POWER MENU */
 .power-menu{position:absolute;bottom:56px;right:8px;background:rgba(28,28,36,.98);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px;z-index:600;display:none;box-shadow:0 16px 40px rgba(0,0,0,.7);min-width:160px}
 .power-menu.open{display:block;animation:pmopen .15s ease}
@@ -1417,10 +1458,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 
 <!-- LOGIN -->
 <div class="screen" id="s-login" style="z-index:5">
-  <div class="login-bg-overlay"></div>    <div style="position:absolute;top:16px;right:16px;z-index:10;display:flex;gap:6px;align-items:center">
-      <button id="lang-en" onclick="setLang('en')" style="background:rgba(0,120,212,.7);color:white;border:1px solid rgba(0,120,212,.9);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600">EN</button>
-      <button id="lang-fr" onclick="setLang('fr')" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer">FR</button>
-    </div>
+  <div class="login-bg-overlay"></div>
   <div class="login-card">
     <div class="login-avatar"><img src="./photo.jpg" alt="TR"/></div>
     <div class="login-name">Tantelinirina Rasoloniaina</div>
@@ -1436,12 +1474,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
 
 <!-- DESKTOP -->
 <div class="screen" id="s-desk" style="z-index:2">
-  <div class="desk-area" id="desk-area">  <!-- LANGUAGE SELECTOR -->
-  <div style="position:absolute;top:14px;left:14px;z-index:160;display:flex;gap:6px;align-items:center">
-    <button id="desk-lang-en" onclick="setLang('en')" style="background:rgba(0,120,212,.6);color:white;border:1px solid rgba(0,120,212,.8);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer;font-weight:600">EN</button>
-    <button id="desk-lang-fr" onclick="setLang('fr')" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:4px 10px;font-size:11px;font-family:inherit;cursor:pointer">FR</button>
-  </div>
-
+  <div class="desk-area" id="desk-area">
   <!-- ═══ DESKTOP ICONS (Portfolio sections only) ═══ -->
   <div class="dico" id="di-about" style="top:20px;left:16px" data-open="w-about">
     <div class="dico-img" style="background:linear-gradient(135deg,#0078d4,#6b47ed)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="white" opacity=".9"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="white" stroke-width="2" fill="none" opacity=".9"/></svg></div>
@@ -1683,8 +1716,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'Segoe UI',system-u
     <div class="sys-tray">
       <div class="tray-icon" id="tray-notif" title="Notifications"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2a5 5 0 0 0-5 5v3l-1 2h12l-1-2V7a5 5 0 0 0-5-5z" stroke="currentColor" stroke-width="1.3" fill="none"/><path d="M6.5 13a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.3"/></svg></div>
       <div class="tray-icon" id="tray-ac" title="Wi-Fi · Volume · Batterie"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 12.5a.75.75 0 1 1 0 1.5.75.75 0 0 1 0-1.5z" fill="currentColor"/><path d="M4.5 9.5A5 5 0 0 1 8 8a5 5 0 0 1 3.5 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none"/><path d="M2 7A8 8 0 0 1 8 4.5 8 8 0 0 1 14 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" fill="none" opacity=".5"/></svg></div>
-      <!-- POWER BUTTON -->
-      <div class="tray-icon" id="tray-power" title="Options d'alimentation"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 3v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5 5a5 5 0 1 0 6 0" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg></div>
+
       <div class="tray-clock" id="tray-clock-btn"><span class="tc-time" id="tray-time">--:--</span><span class="tc-date" id="tray-date">--/--/----</span></div>
     </div>
   </div>
@@ -2142,7 +2174,7 @@ document.addEventListener('click',e=>{
 $('tb-start').addEventListener('click',e=>{e.stopPropagation();toggleStart()})
 $('tray-notif').addEventListener('click',e=>{e.stopPropagation();$('notif-center').classList.contains('open')?closeNotif():openNotif()})
 $('tray-ac').addEventListener('click',e=>{e.stopPropagation();$('action-center').classList.contains('open')?closeAC():openAC()})
-$('tray-power').addEventListener('click',e=>{e.stopPropagation();closeStart();closeAC();closeNotif();$('power-menu').classList.toggle('open')})
+// tray-power removed
 $('tray-clock-btn').addEventListener('click',e=>{e.stopPropagation();$('notif-center').classList.contains('open')?closeNotif():openNotif()})
 $('btn-cancel').addEventListener('click',()=>$('lout').classList.remove('show'))
 $('btn-logout').addEventListener('click',()=>{$('lout').classList.remove('show');show('s-login')})
@@ -2151,7 +2183,7 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('#smenu')&&!e.target.closest('#tb-start'))closeStart()
   if(!e.target.closest('#action-center')&&!e.target.closest('#tray-ac'))closeAC()
   if(!e.target.closest('#notif-center')&&!e.target.closest('#tray-notif')&&!e.target.closest('#tray-clock-btn'))closeNotif()
-  if(!e.target.closest('#power-menu')&&!e.target.closest('#tray-power')&&!e.target.closest('.sm-power-btn'))closePowerMenu()
+  if(!e.target.closest('#power-menu')&&!e.target.closest('.sm-power-btn'))closePowerMenu()
 })
 
 /* ═══ INIT ═══ */
