@@ -104,19 +104,55 @@ function maximizeWin(id){
   bringFront(id)
 }
 function refreshTaskbar(){
-  const c=$('tb-wins');if(!c)return;c.innerHTML=''
-  const lbls={'w-about':currentLang==='fr'?'Profil':'Profile','w-skills':currentLang==='fr'?'Compétences':'Skills','w-projects':currentLang==='fr'?'Projets':'Projects','w-contact':'Contact','w-experience':currentLang==='fr'?'Expérience':'Experience','w-formation':'Formation','w-certif':'Certifications','w-volontariat':currentLang==='fr'?'Volontariat':'Volunteering','w-calc':currentLang==='fr'?'Calculatrice':'Calculator','w-paint':'Paint','w-vscode':'VS Code','w-chrome':'Chrome','w-settings':currentLang==='fr'?'Paramètres':'Settings'}
-  Object.entries(WIN_META).forEach(([id,meta])=>{
-    const el=$(id);if(!el||!el.classList.contains('open'))return
-    const vis=!el.classList.contains('minimized')
-    const btn=document.createElement('button')
-    btn.className='tb-win-btn'+(vis?' is-open':'')
-    btn.innerHTML=`<span class="tb-dot" style="background:${meta.color}"></span><span>${lbls[id]||meta.label}</span>`
-    btn.addEventListener('click',()=>{el.classList.contains('minimized')?openWin(id):minimizeWin(id)})
+  // Pinned apps that are in the taskbar
+  const PINNED = ['w-chrome','w-vscode','w-calc','w-paint','w-settings']
+  
+  // Update dot indicators on pinned taskbar icons
+  PINNED.forEach(id => {
+    const el = $(id)
+    const tbiEl = document.querySelector('.tbi[data-open="'+id+'"]')
+    if (!tbiEl) return
+    // Add/remove 'lit' class (shows dot below)
+    if (el && el.classList.contains('open')) {
+      tbiEl.classList.add('lit')
+    } else {
+      tbiEl.classList.remove('lit')
+    }
+  })
+
+  // tb-wins: only show NON-pinned open windows
+  const c = $('tb-wins')
+  if (!c) return
+  c.innerHTML = ''
+  const lbls = {
+    'w-about': currentLang==='fr'?'Profil':'Profile',
+    'w-skills': currentLang==='fr'?'Compétences':'Skills',
+    'w-projects': currentLang==='fr'?'Projets':'Projects',
+    'w-contact': 'Contact',
+    'w-experience': currentLang==='fr'?'Expérience':'Experience',
+    'w-formation': 'Education',
+    'w-certif': 'Certifications',
+    'w-volontariat': currentLang==='fr'?'Volontariat':'Volunteering',
+    'w-calc': currentLang==='fr'?'Calculatrice':'Calculator',
+    'w-paint': 'Paint',
+    'w-vscode': 'VS Code',
+    'w-chrome': 'Chrome',
+    'w-settings': currentLang==='fr'?'Paramètres':'Settings'
+  }
+  Object.entries(WIN_META).forEach(([id, meta]) => {
+    const el = $(id)
+    if (!el || !el.classList.contains('open')) return
+    if (PINNED.includes(id)) return // skip pinned - they show dot instead
+    const vis = !el.classList.contains('minimized')
+    const btn = document.createElement('button')
+    btn.className = 'tb-win-btn' + (vis ? ' is-open' : '')
+    btn.innerHTML = '<span class="tb-dot" style="background:'+meta.color+'"></span><span>'+(lbls[id]||meta.label)+'</span>'
+    btn.addEventListener('click', () => {
+      el.classList.contains('minimized') ? openWin(id) : minimizeWin(id)
+    })
     c.appendChild(btn)
   })
 }
-
 /* ═══ DRAG ═══ */
 function makeDraggable(el){
   const tb=el.querySelector('.tbar');if(!tb)return
@@ -414,7 +450,9 @@ function setLang(lang){
 const EJS_SERVICE='YOUR_SERVICE_ID',EJS_TEMPLATE='YOUR_TEMPLATE_ID',EJS_KEY='YOUR_PUBLIC_KEY'
 window.addEventListener('load',()=>{if(typeof emailjs!=='undefined')emailjs.init(EJS_KEY)})
 
-/* ═══ BOOT + INIT (runs after DOM ready) ═══ */
+/* ═══ BOOT + INIT ═══ */
+document.addEventListener('DOMContentLoaded', function() {
+
 
   tick(); setInterval(tick,30000)
 
@@ -510,4 +548,9 @@ document.addEventListener('click', function(e) {
     if (bp) bp.style.display = bp.style.display === 'block' ? 'none' : 'block'
     return
   }
+})
+
+  // Init windows + icons
+  document.querySelectorAll('.win').forEach(w => { makeDraggable(w); addResizeHandles(w) })
+  document.querySelectorAll('.dico').forEach(makeDraggableIcon)
 })
